@@ -1,0 +1,37 @@
+MODULES
+
+- network
+	+ vpc
+	+ public-subnet-A
+	+ private-subnet-B
+	+ private-subnet-C
+	+ bastion -> pem | psql
+	+ security_group[ssh]
+	+ dns
+
+- ecs
+	+ ecs
+	+ launch-configurations[ami packer] | consul agent | ecs agent
+	+ security_group[docker_sg]
+	+ security_group[consul_sg]
+	+ autoscaling_group
+	+ metric_alarm up|down
+
+- consul
+	+ launch-configurations[ami packer]
+	+ consul servers asg
+    + security_group[elb]
+	
+- rds
+	+ db_subnet_group
+	+ security_group[psql]
+
+	* quitar private-subnet de aca!
+
+
+- kafka
+	+ kafka servers asg | zookeeper
+
+
+
+

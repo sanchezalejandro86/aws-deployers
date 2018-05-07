@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  # https://github.com/yahoo/kafka-manager
+  kafka-manager:
+    image: qnib/plain-kafka-manager
+    network_mode: host
+    environment:
+      ZOOKEEPER_HOSTS: "${zookeeper_cluster}"
+      APPLICATION_SECRET: change_me_please
+    restart: always

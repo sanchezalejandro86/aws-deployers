@@ -1,0 +1,68 @@
+terraform {
+  backend "s3" {}
+}
+# VARIABLES
+variable "clustername" {}
+variable "region" {}
+variable "profile" { default = "default" }
+variable "keypair" {}
+
+variable "amis_consul_server"{
+  type = "map"
+
+  # Workia amis generated with Consul [amazon-linux-ami]
+  default = {
+    "us-east-1" = "ami-755f890f"
+    "us-east-2" = "ami-b5371bd0" 
+  }
+}
+
+variable "amis_ecs"{
+  type = "map"
+
+  # Workia amis generated with Consul [amazon-linux-ami]
+  default = {
+    "us-east-1" = "ami-d65f89ac" #"ami-04351e12"
+    "us-east-2" = "ami-c13519a4" #"ami-207b5a45" 
+  }
+}
+
+variable "amis_kafka"{
+  type = "map"
+
+  default = {
+    "us-east-1" = "ami-cd0f5cb6"
+    "us-east-2" = "ami-42ecb727" 
+  }
+}
+
+variable "amis_bastion"{
+  type = "map"
+
+  default = {
+    "us-east-1" = "ami-a7fdcadc"
+    "us-east-2" = "ami-4986a62c"
+  }
+}
+
+variable "amis_mongodb"{
+  type = "map"
+
+  default = {
+	"us-east-1" = "ami-b043a4ca" #"ami-fce3c696"
+	"us-east-2" = "ami-1fe6c47a" #"ami-4ae2b92f"
+  }
+}
+
+
+# MODULES
+module "network" {
+  clustername = "${var.clustername}"
+  region    = "${var.region}"
+  profile   = "${var.profile}"
+  az_count  = "3"
+  keypair = "${var.keypair}"
+  ami = "${lookup(var.amis_bastion, var.region)}"
+  source  = "models/vpc"
+}
+
